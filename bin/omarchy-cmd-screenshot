@@ -1,11 +1,15 @@
 #!/bin/bash
 
 [[ -f ~/.config/user-dirs.dirs ]] && source ~/.config/user-dirs.dirs
-OUTPUT_DIR="${OMARCHY_SCREENSHOT_DIR:-${XDG_PICTURES_DIR:-$HOME/Pictures}}"
+OMARCHY_SCREENSHOTS_DIR="${XDG_PICTURES_DIR:-$HOME/Pictures}/Screenshots" #Remove /Screenshots to save screenshots in ~/Pictures
+OUTPUT_DIR=$OMARCHY_SCREENSHOTS_DIR
 
 if [[ ! -d "$OUTPUT_DIR" ]]; then
-  notify-send "Screenshot directory does not exist: $OUTPUT_DIR" -u critical -t 3000
-  exit 1
+  mkdir -p $OUTPUT_DIR
+  if [[ ! -d "$OUTPUT_DIR" ]]; then
+    notify-send "Screenshot directory does not exist: $OUTPUT_DIR" -u critical -t 3000
+    exit 1
+  fi
 fi
 
 pkill slurp || hyprshot -m ${1:-region} --raw |
