@@ -28,6 +28,7 @@ if pgrep -x waybar >/dev/null; then
   omarchy-restart-waybar
 fi
 omarchy-restart-swayosd
+omarchy-restart-terminal
 hyprctl reload
 pkill -SIGUSR2 btop
 makoctl reload
