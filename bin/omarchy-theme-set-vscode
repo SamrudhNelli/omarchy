@@ -38,15 +38,16 @@ for editor_config in "${EDITORS[@]}"; do
         sed -i --follow-symlinks -E '0,/\{/{s/\{/{\ "workbench.colorTheme": "",/}' "$SETTINGS_PATH"
       fi
 
-      # Update theme
-      sed -i --follow-symlinks -E \
-        "s/(\"workbench.colorTheme\"[[:space:]]*:[[:space:]]*\")[^\"]*(\")/\1$theme_name\2/" \
-        "$SETTINGS_PATH"
-    else
-      # Remove theme from settings.json when the theme doesn't have $EDITOR_NAME support
-      if [[ -f "$SETTINGS_PATH" ]]; then
-        sed -i --follow-symlinks -E 's/\"workbench\.colorTheme\"[[:space:]]*:[^,}]*,?//' "$SETTINGS_PATH"
+        # Update theme
+        sed -i --follow-symlinks -E \
+          "s/(\"workbench.colorTheme\"[[:space:]]*:[[:space:]]*\")[^\"]*(\")/\1$theme_name\2/" \
+          "$SETTINGS_PATH"
+      else
+        # Remove theme from settings.json when the theme doesn't have $EDITOR_NAME support
+        if [[ -f "$SETTINGS_PATH" ]]; then
+          sed -i --follow-symlinks -E 's/\"workbench\.colorTheme\"[[:space:]]*:[^,}]*,?//' "$SETTINGS_PATH"
+        fi
       fi
     fi
-  fi
+done
 done
