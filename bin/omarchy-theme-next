@@ -1,0 +1,20 @@
+#!/bin/bash
+
+mapfile -t themes < <(omarchy-theme-list)
+
+current=$(omarchy-theme-current)
+current_index=0
+
+for i in "${!themes[@]}"; do
+   if [[ "${themes[$i]}" == "$current" ]]; then
+       current_index=$i
+       break
+   fi
+done
+
+next_index=$(( (current_index + 1) % ${#themes[@]} ))
+
+next_theme="${themes[$next_index]}"
+formatted_theme="${next_theme// /-}"
+
+omarchy-theme-set $formatted_theme
