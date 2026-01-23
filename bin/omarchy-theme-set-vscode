@@ -8,6 +8,7 @@ set_theme() {
   local editor_cmd="$1"
   local settings_path="$2"
   local skip_flag="$3"
+  local default_theme="c2k.ashtray-vibrant"
 
   omarchy-cmd-present "$editor_cmd" && [[ ! -f "$skip_flag" ]] || return 0
 
@@ -30,9 +31,17 @@ set_theme() {
       "s/(\"workbench.colorTheme\"[[:space:]]*:[[:space:]]*\")[^\"]*(\")/\1$theme_name\2/" \
       "$settings_path"
   elif [[ -f "$settings_path" ]]; then
-    sed -i --follow-symlinks -E 's/\"workbench\.colorTheme\"[[:space:]]*:[^,}]*,?//' "$settings_path"
+
+    if ! grep -q '"workbench.colorTheme"' "$settings_path"; then
+      sed -i --follow-symlinks -E '0,/\{/{s/\{/{\ "workbench.colorTheme": "",/}' "$settings_path"
+    fi
+
+    sed -i --follow-symlinks -E \
+      "s/(\"workbench.colorTheme\"[[:space:]]*:[[:space:]]*\")[^\"]*(\")/\1$default_theme\2/" \
+      "$settings_path"
   fi
 }
+
 
 set_theme "code" "$HOME/.config/Code/User/settings.json" "$HOME/.local/state/omarchy/toggles/skip-vscode-theme-changes"
 set_theme "codium" "$HOME/.config/VSCodium/User/settings.json" "$HOME/.local/state/omarchy/toggles/skip-codium-theme-changes"
