@@ -80,6 +80,7 @@ mariadb-libs
 mise
 mpv
 nautilus
+nautilus-python
 gnome-disk-utility
 noto-fonts
 noto-fonts-cjk
@@ -146,3 +147,4 @@ xournalpp
 yaru-icon-theme
 yay
 zoxide
+r8168-lts
